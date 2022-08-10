@@ -41,7 +41,7 @@ module Api
       end
 
       def product_params
-        params.require(:product).permit(:)
+        params.require(:product).permit(:name, :description, :category_id)
       end
     end
   end
