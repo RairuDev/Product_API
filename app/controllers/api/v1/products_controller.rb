@@ -4,7 +4,8 @@ module Api
       before_action :set_product, only: [:show, :update, :destroy]
 
       def index
-        products = Product.order(created_at: :desc)
+        products = Product.all
+
         render json: { status: "SUCCESS", message: "値を全て取得しました", data: products }
       end
 
@@ -14,6 +15,7 @@ module Api
 
       def create
         product = Product.new(product_params)
+        # binding.pry
         if product.save
           render json: { status: 201, data: product }
         else
