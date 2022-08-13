@@ -4,18 +4,17 @@ module Api
       # before_action :set_product, only: [:update, :destroy]
 
       def index
-        binding.pry
-        if Category.find(params[:category_id])
-          product = Product.where(category_id: params[:category_id].to_i)
-          render json: { status: "SUCCESS", message: "特定の値を取得しました", data: product }
-        elsif Category.find(params[:category_id]) == false
-          render json: { status: 422, message: "指定されたカテゴリーはありませんでした", data: product }
+        # binding.pry
+        if params[:category_id] && Category.find_by(id: params[:category_id])
+          products = Product.where(category_id: params[:category_id].to_i)
+          render json: { status: "SUCCESS", message: "特定の値を取得しました", data: products }
+        elsif params[:category_id]
+          render json: { status: "Category Not Found", message: "指定されたカテゴリーはありませんでした" }
         else
-          binding.pry
-          product = Product.all
-          render json: { status: "SUCCESS", message: "全て返します", data: product }
+          # binding.pry
+          products = Product.all
+          render json: { status: "SUCCESS", message: "パラメータが指定されなかったので全て返します", data: products }
         end
-        # render json: { status: "SUCCESS", message: "値を全て取得しました", data: products }
       end
 
       def show
@@ -49,14 +48,6 @@ module Api
       end
 
       private
-
-      #指定されたカテゴリーIDが存在するのかをチェックする
-      # def category_check
-      #   binding.pry
-      #   if Category.find(params[:category_id])
-      #     Product.where(category_id: params[:category_id].to_i)
-      #   end
-      # end
 
       def product_params
         params.require(:product).permit(:name, :description, :category_id)
