@@ -4,6 +4,7 @@ RSpec.describe Category, type: :model do
   let (:category) { create(:category) }
   context "全ての項目が適切な時" do
     it "保存される" do
+      # binding.pry
       expect(category).to be_valid
     end
   end

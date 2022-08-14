@@ -1,10 +1,9 @@
 require "rails_helper"
 
 RSpec.describe Product, type: :model do
-  let (:category) { create(:category) }
-  let (:product) { create(:product) }
-  describe "会員登録" do
-    it "全ての項目が存在すれば登録できること" do
+  context "全ての項目が適切な時" do
+    it "保存される" do
+      product = create(:product)
       expect(product).to be_valid
     end
   end
@@ -20,7 +19,8 @@ RSpec.describe Product, type: :model do
 
     context "nameがnilな時" do
       it "登録できないこと" do
-        product = build(:product, name: nil)
+        # binding.pry
+        product = build(:product, name: nil, category_id: 1)
         product.valid?
         expect(product.errors[:name]).to include ("can't be blank")
       end
@@ -28,20 +28,18 @@ RSpec.describe Product, type: :model do
 
     context "descriptionがnilな時" do
       it "登録できないこと" do
-        product = build(:product, description: nil)
+        product = build(:product, description: nil, category_id: 1)
         product.valid?
         expect(product.errors[:description]).to include ("can't be blank")
       end
     end
-  end
-
-  describe "name一意性のテスト" do
     context "登録したnameが存在する場合" do
       it "登録できないこと" do
-        binding.pry
-        product = build(:product, name: product.name)
-        product.valid?
-        expect(product.errors[:name]).to include ("has already been taken")
+        # binding.pry
+        product = create(:product)
+        new_product = build(:product, name: product.name)
+        new_product.valid?
+        expect(new_product.errors[:name]).to include ("has already been taken")
       end
     end
   end
