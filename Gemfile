@@ -23,7 +23,7 @@ gem "pry-byebug"
 # ついでに以下の2つも追加しておく方が良さそう
 gem "net-imap"
 gem "net-pop"
-
+gem "annotate"
 # rubocop
 gem "rubocop", require: false
 gem "rubocop-rails", require: false
