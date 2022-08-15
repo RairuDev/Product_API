@@ -7,7 +7,10 @@ module Api
         # binding.pry
         if params[:category_id] && Category.find_by(id: params[:category_id])
           products = Product.where(category_id: params[:category_id].to_i)
-          render json: { status: "SUCCESS", message: "特定の値を取得しました", data: products }
+          test = [category_name: Category.find_by(id: params[:category_id]).category_name]
+          products.merge(test)
+          # Product.where(category_id: 1).joins(:categories).merge(Category.where(category_name: "PC"))
+          render json: { status: "SUCCESS", message: "指定されたcategory_idの値を取得しました", data: products }
         elsif params[:category_id]
           render json: { status: "Category Not Found", message: "指定されたカテゴリーはありませんでした" }
         else
@@ -20,15 +23,15 @@ module Api
       def show
         # binding.pry
         product = Product.find(params[:id])
-        render json: { status: "SUCCESS", message: "特定の値を取得しました", data: product }
+        render json: { status: 200, message: "特定の値を取得しました", data: product }
       end
 
       def create
         product = Product.new(product_params)
         if product.save
-          render json: { status: 201, data: product }
+          render json: { status: 201, message: "productを新しく作成しました", data: product }
         else
-          render json: { status: 422, data: product }
+          render json: { status: 422, message: "productの作成に失敗しました", data: product }
         end
       end
 
