@@ -30,3 +30,4 @@ AllCops:
     - Gemfile
     - bin/bundle
     - config/environments/development.rb
+    - spec/requests/api/v1/products_spec.rb
