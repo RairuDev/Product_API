@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 module Api
   module V1
-    class Api::V1::ProductsController < ApplicationController
+    class ProductsController < ApplicationController
       # before_action :set_product, only: [:update, :destroy]
 
       def index
