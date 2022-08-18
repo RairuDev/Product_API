@@ -3,13 +3,12 @@ module Api
   module V1
     class ProductsController < ApplicationController
       def index
-        if params[:category_id] && Category.find(params[:category_id])
-          products = Product.joins(:category).select("products.id, products.category_id, categories.name AS category_name, products.name, products.description, products.created_at").where(category_id: params[:category_id])
-          render json: { status: "SUCCESS", message: "指定されたcategory_idの値を取得しました", data: products }
-        else
-          products = Product.joins(:category).select("products.id, products.category_id, categories.name AS category_name, products.name, products.description, products.created_at")
-          render json: { message: "パラメータが指定されなかったので全て返します", data: products }, status: :ok
-        end
+        products = if params[:category_id] && Category.find(params[:category_id])
+            Product.joins(:category).select("products.id, products.category_id, categories.name AS category_name, products.name, products.description, products.created_at").where(category_id: params[:category_id])
+          else
+            Product.joins(:category).select("products.id, products.category_id, categories.name AS category_name, products.name, products.description, products.created_at")
+          end
+        render json: { data: products }, status: :ok
       end
 
       def show
