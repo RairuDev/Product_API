@@ -2,27 +2,17 @@
 module Api
   module V1
     class ProductsController < ApplicationController
-      # before_action :set_product, only: [:update, :destroy]
-
       def index
-        # binding.pry
-        if params[:category_id] && Category.find_by(id: params[:category_id])
-          products = Product.where(category_id: params[:category_id].to_i)
-          test = [category_name: Category.find_by(id: params[:category_id]).category_name]
-          products.merge(test)
-          # Product.where(category_id: 1).joins(:categories).merge(Category.where(category_name: "PC"))
+        if params[:category_id] && Category.find(params[:category_id])
+          products = Product.joins(:category).select("products.id, products.category_id, categories.name AS category_name, products.name, products.description, products.created_at").where(category_id: params[:category_id])
           render json: { status: "SUCCESS", message: "指定されたcategory_idの値を取得しました", data: products }
-        elsif params[:category_id]
-          render json: { status: "Category Not Found", message: "指定されたカテゴリーはありませんでした" }
         else
-          # binding.pry
-          products = Product.all
-          render json: { status: "SUCCESS", message: "パラメータが指定されなかったので全て返します", data: products }
+          products = Product.joins(:category).select("products.id, products.category_id, categories.name AS category_name, products.name, products.description, products.created_at")
+          render json: { message: "パラメータが指定されなかったので全て返します", data: products }, status: :ok
         end
       end
 
       def show
-        # binding.pry
         product = Product.find(params[:id])
         render json: { status: 200, message: "特定の値を取得しました", data: product }
       end

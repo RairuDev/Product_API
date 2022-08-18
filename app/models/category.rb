@@ -4,12 +4,12 @@
 #
 # Table name: categories
 #
-#  id            :integer          not null, primary key
-#  category_name :string           not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id         :integer          not null, primary key
+#  name       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class Category < ApplicationRecord
   has_many :products
-  validates :category_name, presence: true
+  validates :name, presence: true
 end
